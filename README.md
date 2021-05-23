@@ -1,0 +1,2 @@
+# fruit_of_love_smart_contract
+Solidty
