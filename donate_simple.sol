@@ -10,14 +10,14 @@ contract FruitOfLove {
 
   struct Payee {  // 수취인
     bool status;  // 상태
-    int8 balance; // 잔여량
-    int8 weight;  // 기부량
+    int16 balance; // 잔여량
+    int16 weight;  // 기부량
   }
 
   //mapping (address => Payee) public payees;
   //mapping (int8 => address) public payeesIndex;
-  mapping (int8 => Payee) public payees;
-  int8 public payeesIndexSize;
+  mapping (int16 => Payee) public payees;
+  int16 public payeesIndexSize;
 
   // 이벤트 선언
   event NewDonation(address indexed donator, uint amt);
@@ -32,27 +32,33 @@ contract FruitOfLove {
     payees[0].status = true;
     payeesIndexSize = 1; // // 관리자
   }
+  function getPayeesNum() public returns (int16) {
+    return payeesIndexSize;
+  }
 
-  function addPayee(int8 _payee) public returns (int8) {
-    payees[_payee].status = true;
-    payees[_payee].balance = 0;
-    payees[_payee].weight = 0;
+  function addPayee() public returns (int16) {
+    payees[payeesIndexSize].status = true;
+    payees[payeesIndexSize].balance = 0;
+    payees[payeesIndexSize].weight = 0;
     payeesIndexSize++;
     return payeesIndexSize - 1;
   }
 
-  function getBalance(int8 wallet_id) public returns (int8) {
+  function delPayee() public {
+    payeesIndexSize--;
+  }
+
+  function getBalance(int16 wallet_id) public returns (int16) {
     return payees[wallet_id].balance;
   }
 
-  function donate(int8 from, int8 to, int8 amount) public {
+  function donate(int16 from, int16 to, int16 amount) public payable {
     payees[to].balance += (amount * 95 / 100);
     payees[from].weight += amount;
     payees[0].balance += (amount * 5 / 100);
   }
   
-  function hihi(int8 from, int8 to, int8 amount) public {
+  function hihi(int16 from, int16 to, int16 amount) public payable {
     payees[0].balance = amount;
   }
-
 }
